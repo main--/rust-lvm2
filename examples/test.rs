@@ -16,7 +16,7 @@ fn main() -> Result<(), snafu::Whatever> {
     let lvm = Lvm2::open(&mut f).whatever_context("")?;
     let lv = lvm.lvs().skip(3).next().unwrap();
     tracing::info!("LV {}", lv.name());
-    let mut olv = lvm.open_lv(&lv, &mut f);
+    let mut olv = lvm.open_lv(lv, &mut f);
 
     let mut buf = [0u8; 1024];
     olv.read_exact(&mut buf).unwrap();

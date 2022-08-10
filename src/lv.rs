@@ -4,6 +4,7 @@ use acid_io::{Read, Seek, SeekFrom};
 use crate::Lvm2;
 use crate::metadata::LVDesc;
 
+#[derive(Clone, Copy)]
 pub struct LV<'a> {
     pub(crate) name: &'a str,
     pub(crate) desc: &'a LVDesc,
@@ -22,7 +23,7 @@ impl<'a> LV<'a> {
 }
 
 pub struct OpenLV<'a, T> {
-    pub(crate) lv: &'a LV<'a>,
+    pub(crate) lv: LV<'a>,
     pub(crate) lvm: &'a Lvm2,
     pub(crate) reader: T,
 

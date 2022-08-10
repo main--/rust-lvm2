@@ -103,7 +103,13 @@ impl Lvm2 {
     pub fn lvs(&self) -> impl Iterator<Item=LV> {
         self.vg_config.logical_volumes.iter().map(|(name, desc)| LV { name, desc })
     }
-    pub fn open_lv<'a, T: Read + Seek>(&'a self, lv: &'a LV<'a>, reader: T) -> OpenLV<'a, T> {
+    pub fn open_lv_by_name<'a, T: Read + Seek>(&'a self, name: &str, reader: T) -> Option<OpenLV<'a, T>> {
+        self.vg_config.logical_volumes.get_key_value(name).map(move |(name, desc)| self.open_lv(LV { name, desc }, reader))
+    }
+    pub fn open_lv_by_id<'a, T: Read + Seek>(&'a self, id: &str, reader: T) -> Option<OpenLV<'a, T>> {
+        self.lvs().find(|lv| lv.id() == id).map(move |lv| self.open_lv(lv, reader))
+    }
+    pub fn open_lv<'a, T: Read + Seek>(&'a self, lv: LV<'a>, reader: T) -> OpenLV<'a, T> {
         OpenLV {
             lv,
             lvm: self,
