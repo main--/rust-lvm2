@@ -1,7 +1,12 @@
 [package]
 name = "lvm2"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+description = "Pure-rust LVM2 parser"
+license = "MIT"
+documentation = "https://docs.rs/lvm2"
+repository = "https://github.com/main--/rust-lvm2"
+exclude = ["image.raw"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
