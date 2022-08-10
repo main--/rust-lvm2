@@ -7,7 +7,7 @@ use serde::Deserialize;
 
 use crate::force_de_typed_map::ForceDeTypedMap;
 
-pub mod deserialize;
+pub(crate) mod deserialize;
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct MetadataRoot {
@@ -28,6 +28,8 @@ pub struct LVDesc {
     pub id: String,
     pub status: Vec<String>,
     pub flags: Vec<String>,
+    #[serde(default)]
+    pub tags: Vec<String>,
     pub creation_time: u64,
     pub creation_host: String,
     pub segment_count: usize,

@@ -35,7 +35,7 @@ pub enum Error {
 
 
 mod header;
-mod metadata;
+pub mod metadata;
 mod force_de_typed_map;
 mod lv;
 pub use lv::*;

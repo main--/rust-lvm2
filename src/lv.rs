@@ -20,6 +20,10 @@ impl<'a> LV<'a> {
         self.desc.segments.0.values().map(|x| x.start_extent + x.extent_count).max()
             .expect("LV has no segments??")
     }
+
+    pub fn raw_metadata(&self) -> &'a LVDesc {
+        self.desc
+    }
 }
 
 pub struct OpenLV<'a, T> {
