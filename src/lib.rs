@@ -24,15 +24,55 @@ pub struct Lvm2 {
 
 #[derive(Debug, Snafu)]
 pub enum Error {
-    Io { source: acid_io::Error },
+    Io {
+        #[cfg(not(feature = "std"))]
+        #[snafu(source(from(acid_io::Error, no_std::AcidIoError)))]
+        source: no_std::AcidIoError,
+        #[cfg(feature = "std")]
+        source: acid_io::Error,
+    },
     WrongMagic,
     ParseError { error: String },
     MultipleVGsError,
     PVDoesntContainItself,
-    Serde { source: serde::de::value::Error },
+    Serde {
+        #[cfg(not(feature = "std"))]
+        #[snafu(source(from(serde::de::value::Error, no_std::SerdeDeError)))]
+        source: no_std::SerdeDeError,
+        #[cfg(feature = "std")]
+        source: serde::de::value::Error,
+    },
     MissingMetadata,
 }
 
+#[cfg(not(feature = "std"))]
+mod no_std {
+    pub struct AcidIoError(pub acid_io::Error);
+    impl snafu::Error for AcidIoError {}
+    impl ::core::fmt::Display for AcidIoError {
+        fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+            ::core::fmt::Display::fmt(&self.0, f)
+        }
+    }
+    impl ::core::fmt::Debug for AcidIoError {
+        fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+            ::core::fmt::Debug::fmt(&self.0, f)
+        }
+    }
+
+    pub struct SerdeDeError(pub serde::de::value::Error);
+    impl snafu::Error for SerdeDeError {}
+    impl ::core::fmt::Display for SerdeDeError {
+        fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+            ::core::fmt::Display::fmt(&self.0, f)
+        }
+    }
+    impl ::core::fmt::Debug for SerdeDeError {
+        fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+            ::core::fmt::Debug::fmt(&self.0, f)
+        }
+    }
+}
 
 mod header;
 pub mod metadata;
