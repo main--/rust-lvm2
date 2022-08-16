@@ -1,6 +1,6 @@
 [package]
 name = "lvm2"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 description = "Pure-rust LVM2 parser"
 license = "MIT"
