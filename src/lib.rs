@@ -127,7 +127,7 @@ impl Lvm2 {
     }
 
     pub fn pv_id(&self) -> &str {
-        &self.pvh.pv_ident
+        &self.vg_config.physical_volumes[&self.pv_name].id
     }
     pub fn pv_name(&self) -> &str {
         &self.pv_name
